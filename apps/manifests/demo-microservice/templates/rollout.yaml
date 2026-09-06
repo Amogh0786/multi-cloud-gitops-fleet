@@ -1,20 +1,20 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Rollout
 metadata:
-  name: {{ include "demo-microservice.fullname" . }}
+  name: {{ .Release.Name }}-demo-microservice
   labels:
+    app: demo-microservice
     gitops-managed: "true"
-    {{- include "demo-microservice.labels" . | nindent 4 }}
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      {{- include "demo-microservice.selectorLabels" . | nindent 6 }}
+      app: demo-microservice
   template:
     metadata:
       labels:
+        app: demo-microservice
         gitops-managed: "true"
-        {{- include "demo-microservice.selectorLabels" . | nindent 8 }}
     spec:
       containers:
         - name: {{ .Chart.Name }}

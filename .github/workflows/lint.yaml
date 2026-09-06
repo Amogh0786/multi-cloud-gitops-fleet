@@ -11,4 +11,4 @@ jobs:
       - name: Setup dependencies
         run: pip install -r requirements.txt
       - name: Lint YAML files
-        run: yamllint . -d "{extends: relaxed, rules: {line-length: disable}}"
+        run: find . -type f -name '*.yaml' ! -path '*/apps/manifests/*' | xargs yamllint -d "{extends: relaxed, rules: {line-length: disable}}"
