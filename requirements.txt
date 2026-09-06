@@ -1,0 +1,2 @@
+# CI/CD Dependencies
+yamllint>=1.30.0
