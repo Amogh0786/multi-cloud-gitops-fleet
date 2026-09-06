@@ -1,0 +1,61 @@
+apiVersion: ec2.aws.upbound.io/v1beta1
+kind: VPC
+metadata:
+  name: eks-vpc
+spec:
+  forProvider:
+    region: us-west-2
+    cidrBlock: 10.0.0.0/16
+    enableDnsSupport: true
+    enableDnsHostnames: true
+  providerConfigRef:
+    name: default
+
+---
+apiVersion: ec2.aws.upbound.io/v1beta1
+kind: Subnet
+metadata:
+  name: eks-subnet-a
+  labels:
+    type: public
+spec:
+  forProvider:
+    region: us-west-2
+    vpcIdSelector:
+      matchControllerRef: true
+    cidrBlock: 10.0.1.0/24
+    availabilityZone: us-west-2a
+    mapPublicIpOnLaunch: true
+  providerConfigRef:
+    name: default
+
+---
+apiVersion: ec2.aws.upbound.io/v1beta1
+kind: Subnet
+metadata:
+  name: eks-subnet-b
+  labels:
+    type: public
+spec:
+  forProvider:
+    region: us-west-2
+    vpcIdSelector:
+      matchControllerRef: true
+    cidrBlock: 10.0.2.0/24
+    availabilityZone: us-west-2b
+    mapPublicIpOnLaunch: true
+  providerConfigRef:
+    name: default
+
+---
+apiVersion: ec2.aws.upbound.io/v1beta1
+kind: InternetGateway
+metadata:
+  name: eks-igw
+spec:
+  forProvider:
+    region: us-west-2
+    vpcIdSelector:
+      matchControllerRef: true
+  providerConfigRef:
+    name: default

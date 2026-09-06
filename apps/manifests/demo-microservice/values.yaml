@@ -1,0 +1,22 @@
+replicaCount: 1
+
+image:
+  repository: demo-microservice
+  tag: "latest"
+  pullPolicy: IfNotPresent
+
+env:
+  CLUSTER_PROVIDER: "local"
+
+service:
+  type: ClusterIP
+  port: 80
+
+ingress:
+  enabled: true
+  className: nginx
+  hosts:
+    - host: demo.local
+      paths:
+        - path: /
+          pathType: Prefix

@@ -1,0 +1,34 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: demo-microservice-fleet
+  namespace: argocd
+spec:
+  generators:
+    - clusters:
+        selector:
+          matchExpressions:
+            - key: provider
+              operator: Exists
+  template:
+    metadata:
+      name: 'demo-microservice-{{name}}'
+    spec:
+      project: fleet-project
+      source:
+        repoURL: 'https://github.com/Amogh0786/multi-cloud-gitops-fleet.git'
+        targetRevision: HEAD
+        path: apps/manifests/demo-microservice
+        helm:
+          parameters:
+            - name: env.CLUSTER_PROVIDER
+              value: '{{metadata.labels.provider}}'
+      destination:
+        server: '{{server}}'
+        namespace: demo-app
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+        syncOptions:
+          - CreateNamespace=true

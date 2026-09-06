@@ -1,0 +1,43 @@
+apiVersion: eks.aws.upbound.io/v1beta1
+kind: Cluster
+metadata:
+  name: eks-cluster
+spec:
+  forProvider:
+    region: us-west-2
+    # NOTE: You will need to replace this with a valid IAM Role ARN for your cluster 
+    # or create one via an IAM Role manifest in Crossplane.
+    roleArn: "arn:aws:iam::123456789012:role/eks-cluster-role"
+    vpcConfig:
+      - subnetIdSelector:
+          matchLabels:
+            type: public
+        endpointPrivateAccess: true
+        endpointPublicAccess: true
+  providerConfigRef:
+    name: default
+
+---
+apiVersion: eks.aws.upbound.io/v1beta1
+kind: NodeGroup
+metadata:
+  name: eks-nodegroup
+spec:
+  forProvider:
+    region: us-west-2
+    clusterNameSelector:
+      matchControllerRef: true
+    # NOTE: You will need to replace this with a valid IAM Role ARN for your nodes 
+    # or create one via an IAM Role manifest in Crossplane.
+    nodeRoleArn: "arn:aws:iam::123456789012:role/eks-nodegroup-role"
+    subnetIdSelector:
+      matchLabels:
+        type: public
+    scalingConfig:
+      - minSize: 1
+        maxSize: 3
+        desiredSize: 2
+    instanceTypes:
+      - t3.medium
+  providerConfigRef:
+    name: default
