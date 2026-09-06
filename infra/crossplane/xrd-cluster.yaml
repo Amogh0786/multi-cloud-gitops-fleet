@@ -1,0 +1,32 @@
+apiVersion: apiextensions.crossplane.io/v1
+kind: CompositeResourceDefinition
+metadata:
+  name: xfleetclusters.platform.example.org
+spec:
+  group: platform.example.org
+  names:
+    kind: XFleetCluster
+    plural: xfleetclusters
+  claimNames:
+    kind: FleetCluster
+    plural: fleetclusters
+  versions:
+  - name: v1alpha1
+    served: true
+    referenceable: true
+    schema:
+      openAPIV3Schema:
+        type: object
+        properties:
+          spec:
+            type: object
+            properties:
+              parameters:
+                type: object
+                properties:
+                  region:
+                    type: string
+                  nodeSize:
+                    type: string
+                required:
+                - region

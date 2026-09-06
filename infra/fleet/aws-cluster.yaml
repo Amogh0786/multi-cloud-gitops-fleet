@@ -1,0 +1,12 @@
+apiVersion: platform.example.org/v1alpha1
+kind: FleetCluster
+metadata:
+  name: demo-aws-cluster
+  namespace: default
+spec:
+  compositionSelector:
+    matchLabels:
+      provider: aws
+  parameters:
+    region: us-west-2
+    nodeSize: medium

@@ -1,0 +1,12 @@
+apiVersion: platform.example.org/v1alpha1
+kind: FleetCluster
+metadata:
+  name: demo-gcp-cluster
+  namespace: default
+spec:
+  compositionSelector:
+    matchLabels:
+      provider: gcp
+  parameters:
+    region: us-central1
+    nodeSize: medium
